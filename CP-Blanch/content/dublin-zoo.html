@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dublin Zoo • Crowne Plaza Blanchardstown</title>
+  <style>
+    :root{ --gap: clamp(12px, 1.6vw, 24px); --pad: clamp(16px, 2vw, 32px); --stroke: rgba(255,255,255,.16); --card-r: 10px; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Arial, sans-serif;
+      color: #fff; background: #000;
+      overflow: auto;       /* allow scrolling on touch devices */
+      -webkit-overflow-scrolling: touch;
+    }
+    #bgvid { position: fixed; inset:0; width:100%; height:100%; object-fit:cover; z-index:-2; }
+    .overlay { position: fixed; inset:0; background: rgba(0,0,0,.25); z-index:-1; }
+    .topbar{ position: sticky; top:0; padding: var(--pad); display:grid; grid-template-columns:1fr auto; align-items:center; z-index:5; background: linear-gradient(to bottom, rgba(0,0,0,.6), rgba(0,0,0,.0)); }
+    .back{ justify-self:start; display:inline-flex; gap:10px; align-items:center; padding:10px 14px; border-radius:999px; border:2px solid var(--stroke); background: rgba(0,0,0,.35); color:#fff; text-decoration:none; font-weight:600; backdrop-filter: blur(6px);}
+    .logo{ justify-self:end; max-width:min(420px, 90vw); filter: drop-shadow(0 6px 18px rgba(0,0,0,.6)); }
+    .logo img{ width:100%; height:auto; object-fit:contain; }
+    .frame{ width:min(100vw, calc(100vh * 16 / 9)); margin: 0 auto; padding: 0 var(--pad) var(--pad); display:grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--gap); }
+    .content{ border-radius: var(--card-r); border:2px solid var(--stroke); background: rgba(0,0,0,.35); padding: clamp(16px, 2vw, 28px); }
+    h1{ margin:0 0 8px 0; font-size: clamp(24px, 3vw, 40px); }
+    .metrics{ display:flex; flex-wrap:wrap; gap: clamp(10px, 1.2vw, 16px); margin: 10px 0 18px; font-weight:700; }
+    .pill{ border:2px solid var(--stroke); border-radius:999px; padding:6px 12px; background: rgba(0,0,0,.35); }
+    p{ margin:10px 0; line-height:1.55; }
+    h2{ margin:18px 0 8px; font-size: clamp(18px, 2.2vw, 28px); }
+    .right{ display:flex; flex-direction:column; justify-content:flex-end; align-items:flex-end; gap:var(--gap); }
+    .right-card{ width:min(520px, 95%); border-radius: var(--card-r); border:2px solid var(--stroke); background: rgba(255,255,255,.08); padding: clamp(8px,1vw,14px); }
+    .right-card img{ width:100%; height:auto; max-height:60vh; object-fit:cover; border-radius:8px; }
+    @media (max-width: 900px){ .frame{ grid-template-columns:1fr; } .right{ align-items:center; } }
+  </style>
+</head>
+<body>
+  <video autoplay muted loop playsinline id="bgvid" poster="content/zoo_poster.jpg">
+    <source src="dublinzooback.mp4" type="video/mp4">
+  </video>
+  <div class="overlay"></div>
+
+  <div class="topbar">
+    <a href="index.html" class="back" aria-label="Back to Home">← Back</a>
+    <div class="logo"><img src="dublinzoologo.png" alt="Dublin Zoo"></div>
+  </div>
+
+  <main class="frame">
+    <section class="content">
+      <h1>Dublin Zoo</h1>
+      <div class="metrics">
+        <div class="pill">CAR - 13 Min</div>
+        <div class="pill">BUS - 40 Min</div>
+        <div class="pill">WALK - 88 Min</div>
+        <div class="pill">6.4 km from here</div>
+      </div>
+
+      <p>Dublin Zoo is a popular family attraction located in the heart of Dublin City Centre. Check into a family room at Crowne Plaza Blanchardstown this October and explore Dublin like never before.</p>
+      <p>Dublin Zoo is a popular family attraction located in the heart of Dublin City Centre. Established in 1831, it is one of the oldest zoos in the world and has a rich history of conservation and education.</p>
+      <p>Getting to Dublin Zoo is easy from Crowne Plaza Blanchardstown. In just 15 minutes, you can get from the hotel lobby to one of the most popular attractions for families in Dublin.</p>
+
+      <h2>A Haven for Animal Enthusiasts</h2>
+      <p>The zoo is home to over 400 animals from various species around the world, making it the perfect destination for animal enthusiasts of all ages. From majestic lions and towering giraffes to playful penguins and fascinating reptiles, the zoo offers a diverse range of creatures to marvel at.</p>
+      <p>With spacious enclosures that prioritise the comfort and well-being of the animals, visitors can witness these magnificent creatures up close and personal while staying in a safe environment.</p>
+
+      <h2>Educational Opportunities</h2>
+      <p>Dublin Zoo goes beyond entertainment, offering various educational opportunities for visitors to learn about the importance of wildlife conservation. The zoo provides informative talks and presentations, allowing visitors to gain a deeper understanding of the animals they encounter.</p>
+      <p>Through these educational initiatives, Dublin Zoo strives to inspire a love for nature and a desire to protect endangered species worldwide. It challenges children to identify wild animals from around the world.</p>
+    </section>
+
+    <aside class="right">
+      <div class="right-card">
+        <img src="Dublin-Zoo-Map-1600x1600.png" alt="Dublin Zoo">
+      </div>
+    </aside>
+  </main>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Emerald Park • Crowne Plaza Blanchardstown</title>
+  <style>
+    :root{ --gap: clamp(12px, 1.6vw, 24px); --pad: clamp(16px, 2vw, 32px); --stroke: rgba(255,255,255,.16); --card-r: 10px; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Arial, sans-serif;
+      color: #fff; background: #000;
+      overflow: auto; -webkit-overflow-scrolling: touch;
+    }
+    #bgvid { position: fixed; inset:0; width:100%; height:100%; object-fit:cover; z-index:-2; }
+    .overlay { position: fixed; inset:0; background: rgba(0,0,0,.25); z-index:-1; }
+    .topbar{ position: sticky; top:0; padding: var(--pad); display:grid; grid-template-columns: 1fr auto; align-items:center; z-index:5; background: linear-gradient(to bottom, rgba(0,0,0,.6), rgba(0,0,0,0)); }
+    .back{ justify-self:start; display:inline-flex; gap:10px; align-items:center; padding:10px 14px; border-radius:999px; border:2px solid var(--stroke); background: rgba(0,0,0,.35); color:#fff; text-decoration:none; font-weight:600; backdrop-filter: blur(6px); }
+    .logo{ justify-self:end; max-width:min(420px, 90vw); filter: drop-shadow(0 6px 18px rgba(0,0,0,.6)); }
+    .logo img{ width:100%; height:auto; object-fit:contain; }
+    .frame{ width:min(100vw, calc(100vh * 16 / 9)); margin: 0 auto; padding: 0 var(--pad) var(--pad); display:grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--gap); }
+    .content{ border-radius: var(--card-r); border:2px solid var(--stroke); background: rgba(0,0,0,.35); padding: clamp(16px, 2vw, 28px); }
+    h1{ margin:0 0 8px 0; font-size: clamp(24px, 3vw, 40px); }
+    .metrics{ display:flex; flex-wrap:wrap; gap: clamp(10px, 1.2vw, 16px); margin: 10px 0 18px; font-weight:700; }
+    .pill{ border:2px solid var(--stroke); border-radius:999px; padding:6px 12px; background: rgba(0,0,0,.35); }
+    p{ margin:10px 0; line-height:1.55; }
+    h2{ margin:18px 0 8px; font-size: clamp(18px, 2.2vw, 28px); }
+    .right{ display:flex; flex-direction:column; justify-content:flex-end; align-items:flex-end; gap:var(--gap); }
+    .right-card{ width:min(520px, 95%); border-radius: var(--card-r); border:2px solid var(--stroke); background: rgba(255,255,255,.08); padding: clamp(8px,1vw,14px); }
+    .right-card img{ width:100%; height:auto; max-height:60vh; object-fit:cover; border-radius:8px; }
+    @media (max-width: 900px){ .frame{ grid-template-columns:1fr; } .right{ align-items:center; } }
+  </style>
+</head>
+<body>
+  <video autoplay muted loop playsinline id="bgvid" poster="content/emerald_poster.jpg">
+    <source src="content/emerald_background.mp4" type="video/mp4">
+  </video>
+  <div class="overlay"></div>
+
+  <div class="topbar">
+    <a href="index.html" class="back" aria-label="Back to Home">← Back</a>
+    <div class="logo"><img src="content/emerald_logo.png" alt="Emerald Park"></div>
+  </div>
+
+  <main class="frame">
+    <section class="content">
+      <h1>Emerald Park</h1>
+      <div class="metrics">
+        <div class="pill">28 Min</div>
+        <div class="pill">58 Min</div>
+        <div class="pill">22.8 km</div>
+      </div>
+
+      <p>Emerald Park, formerly known as Tayto Park is in Ashbourne, Meath. This theme park filled with thrill-seeking attractions is just a 25 minute drive from Crowne Plaza Blanchardstown. This theme park provides the ultimate fun-filled day for the whole family since it opened in 2010! When you’re looking for a Hotel near Emerald Park then look no further than Crowne Plaza.</p>
+
+      <h2>Best Attractions at the Theme Park</h2>
+      <p>As we know, Emerald Park is filled with some epic attractions. We’ve highlighted some of the top rides at the theme park.</p>
+
+      <h3>The Cú Chulainn Rollercoaster</h3>
+      <p>The legendary coaster is inspired by one of the Irish mythology heroes. You will need to be a gutsy hero to deal with the big drops and high speeds of Ireland’s biggest wooden coaster. You’re taken over by the free falling motion on this gravity ride.</p>
+
+      <h3>Air Race</h3>
+      <p>This amazing aerial adventure takes you through the skies like a free flying bird. Experience the ride from your very own cockpit with your co-pilot! The Air Race is suitable for permanent wheelchair users, and there is no height restrictions.</p>
+
+      <h3>The Rotator</h3>
+      <p>This is not for the faint-hearted. Look out over the park as you soar to epic heights, that is, if you can keep your eyes open. With each spin the rotator climbs to dizzy new heights. Your thrill-seeking kids will certainly be appeased after this ride.</p>
+
+      <h3>Viking Voyage</h3>
+      <p>Set sail from the Ancient Viking Village of Meath to the shores of ancient Ireland in this perfect family theme ride. Journey around the coastal streams and explore the waterways, but be warned you’ll battle the splashes of the final drop. This ride is suitable for all, with kids, teens and adults all in mind. You will be given a waterproof poncho, but make sure you have nothing in your pockets!</p>
+
+      <h3>Dino Dash</h3>
+      <p>Another excellent adventure for kids is the dinosaur themed Dino Dash coaster. You will need to duck and dive as you swoop in between the T-Rex and Triceratops of the landscape. The coaster is gently paced with smaller drops ideal for the kids!</p>
+
+      <h2>Other Areas in Emerald Park</h2>
+      <p>You’ve only read about some of the top attractions in the theme park. There are a range of animals in the zoo, bird of prey show, huge sycamore trees in the forest. Why not take a train ride on the steam train express to get to grips with the full junior area and plan your next adventure.</p>
+      <p>As you pace around Emerald Park, you’ll find some new favourite restaurants with colourful birds and animals adorned on the front. A quick stop in these snack bars ensure happy children for the afternoon!</p>
+
+      <h2>Your next family holiday destination</h2>
+      <p>Book into one of our spacious family rooms, and treat your kids to an escape this summer. Each of our rooms have a large tv with Chromecast, great for watching Netflix after an exciting day at Emerald Park. Praesent adipiscing. Etiam feugiat lorem non metus. Morbi mollis tellus ac sapien. Praesent porttitor, nulla vitae posuere iaculis, arcu nisl dignissim dolor, a pretium mi sem ut ipsum. Vestibulum suscipit nulla quis orci. Nam eget dui. Donec venenatis vulputate lorem. Aenean posuere, tortor sed cursus feugiat, nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus.</p>
+
+      <p><a href="https://cpireland.crowneplaza.com/dublin-blanchardstown/locations/emerald-park/" target="_blank" rel="noopener" style="color:#fff; font-weight:700; text-decoration:underline;">View hotel page for Emerald Park →</a></p>
+    </section>
+
+    <aside class="right">
+      <div class="right-card">
+        <!-- Example external image (replace with hotel-hosted image URLs as desired) -->
+        <img src="https://images.unsplash.com/photo-1542044801-3ca9a1e18177?q=80&w=1200&auto=format&fit=crop" alt="Emerald Park">
+      </div>
+    </aside>
+  </main>
+</body>
+</html>

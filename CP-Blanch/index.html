@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Two-Column Kiosk</title>
+<link as="image" href="content/logo.png" rel="preload"/>
+<style>
+    :root{
+      --gap: clamp(5px, 0.1vw, 5px);
+      --pad: clamp(5px, 0.1vw, 5px);
+      --veil: rgba(0,0,0,0.35);
+      --stroke: rgba(255,255,255,0.16);
+      --card-r: 8px;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif;
+      color: #fff;
+      background: #000;
+      overflow: hidden;
+    }
+
+    /* Background video */
+    #bgvid {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.25);
+      z-index: -1;
+    }
+
+    /* Frame & columns (strict 16:9 that stays fully visible) */
+    .center {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: var(--pad);
+    }
+    .frame {
+      width: min(100vw, calc(100vh * 16 / 9));
+      height: min(100vh, calc(100vw * 9 / 16));
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: var(--gap);
+      padding: var(--pad);
+    }
+
+    /* LEFT: 4x3 grid fills column and stays in frame */
+    .left {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: var(--gap);
+      width: 100%;
+      height: 100%;
+    }
+    .tile {
+      display: block;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: var(--card-r);
+      overflow: hidden;
+      text-decoration: none;
+      border: 2px solid var(--stroke);
+      background: #333 center/cover no-repeat;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.35));
+      transition: transform .15s ease, filter .15s ease;
+    }
+    .tile::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: var(--veil);
+    }
+    .tile:hover {
+      transform: translateY(-2px) scale(1.01);
+      filter: drop-shadow(0 6px 18px rgba(0,0,0,0.55));
+    }
+
+    /* RIGHT: spaced-between column, logo top-right, image bottom */
+    .right {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between; /* space between top logo and bottom image */
+      align-items: flex-end;          /* align to the right */
+      width: 100%;
+      height: 100%;
+      gap: var(--gap);
+    }
+    .logo {
+      max-width: min(520px, 100%);
+      filter: drop-shadow(0 6px 18px rgba(0,0,0,0.6));
+    }
+    .logo img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+    .side-image {
+      width: min(460px, 90%);
+      border-radius: var(--card-r);
+      border: 2px solid var(--stroke);
+      background: rgba(255,255,255,0.08);
+      padding: clamp(8px,1vw,14px);
+      display: grid;
+      place-items: center;
+    }
+    .side-image img {
+      width: 100%;
+      height: auto;
+      max-height: 320px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    /* Small screens collapse to one column (optional) */
+    @media (max-width: 900px){
+      .frame {
+        grid-template-columns: 1fr;
+      }
+      .right { align-items: center; }
+    }
+  
+/* === Tile overlay (bottom centered) === */
+.tile { position: relative; }
+.tile .tile-overlay {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  display: grid; justify-items: center; align-content: end;
+  gap: 4px; padding: 12px 14px 16px;
+  text-align: center; z-index: 2;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.35), rgba(0,0,0,0));
+  color: #fff;
+}
+.tile .tile-title { margin: 0; font-size: clamp(14px, 1.6vw, 22px); font-weight: 800; line-height: 1.1; text-shadow: 0 2px 6px rgba(0,0,0,.6); }
+.tile .tile-sub   { margin: 0; font-size: clamp(12px, 1.2vw, 16px); font-weight: 600; line-height: 1.15; opacity: .95; text-shadow: 0 2px 6px rgba(0,0,0,.6); }
+.tile .tile-par   { margin: 0; font-size: clamp(11px, 1.05vw, 14px); line-height: 1.25; opacity: .9; text-shadow: 0 2px 6px rgba(0,0,0,.6); }
+
+/* === Top badge for logos (bottom row only) === */
+.tile .tile-badge {
+  position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+  width: min(48%, 220px); height: auto;
+  z-index: 3;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,.55));
+  pointer-events: none;
+  opacity: 0.98;
+}
+</style>
+</head>
+<body>
+<video autoplay="" id="bgvid" loop="" muted="" playsinline="" poster="content/background_poster.jpg">
+<source src="content/background.mp4" type="video/mp4"/>
+</video>
+<div class="overlay"></div>
+<div class="center">
+<div class="frame">
+<!-- LEFT COLUMN: 12 clickable tiles -->
+<section aria-label="Tile Grid" class="left">
+<a class="tile" href="https://cpireland.crowneplaza.com/dublin-blanchardstown/dining/forchetta-restaurant/" style="background-image:url('content/tile-11.png');">
+  <div class="tile-overlay">
+    <h3 class="tile-title">Forchetta Restaurant</h3>
+    <h4 class="tile-sub"></h4>
+    <p class="tile-par">Forchetta is open for Breakfast 7 days a week.</p>
+  </div>
+</a>
+
+<a class="tile" href="https://cpireland.crowneplaza.com/dublin-blanchardstown/dining/the-sanctuary-bar/" style="background-image:url('content/tile-10.png');">
+  <div class="tile-overlay">
+    <h3 class="tile-title">Sanctuary Bar</h3>
+    <h4 class="tile-sub">Relax & Unwind</h4>
+    <p class="tile-par">A chic bar serving cocktails, wines, craft beers, and light bites in a vibrant atmosphere.</p>
+  </div>
+</a>
+
+<a class="tile" href="https://cpireland.crowneplaza.com/dublin-blanchardstown/dining/room-service/" style="background-image:url('content/tile-9.png');">
+  <div class="tile-overlay">
+    <h3 class="tile-title">Room Service</h3>
+    <h4 class="tile-sub">Comfort Delivered</h4>
+    <p class="tile-par">Delicious meals delivered straight to your room, available 24/7 for your convenience.</p>
+  </div>
+</a>
+
+<a class="tile" href="https://cpireland.crowneplaza.com/dublin-blanchardstown/amenities/gym-sauna/" style="background-image:url('content/tile-8.png');">
+  <div class="tile-overlay">
+    <h3 class="tile-title">GYM & SAUNA</h3>
+    <h4 class="tile-sub">Wellness & Fitness</h4>
+    <p class="tile-par">Stay active with our fully equipped gym and relax in the sauna after your workout.</p>
+  </div>
+</a>
+
+<a class="tile" href="https://cpireland.crowneplaza.com/dublin-blanchardstown/about-us/" style="background-image:url('content/tile-7.png');">
+  <div class="tile-overlay">
+    <h3 class="tile-title">Meet the Team</h3>
+    <h4 class="tile-sub">Our People</h4>
+    <p class="tile-par">Get to know the dedicated professionals who make your stay memorable.</p>
+  </div>
+</a>
+
+<a class="tile" href="https://cpireland.crowneplaza.com/dublin-blanchardstown/conference-centre/" style="background-image:url('content/tile-6.png');">
+  <div class="tile-overlay">
+    <h3 class="tile-title">Meetings • Events</h3>
+    <h4 class="tile-sub">Plan & Host</h4>
+    <p class="tile-par">Versatile meeting rooms and event spaces designed to suit every occasion.</p>
+  </div>
+</a>
+
+<a class="tile" href="https://cpireland.crowneplaza.com/dublin-blanchardstown/amenities/free-parking/" style="background-image:url('content/tile-5.png');">
+  <div class="tile-overlay">
+    <h3 class="tile-title">Parking</h3>
+    <h4 class="tile-sub">On-Site & Secure</h4>
+    <p class="tile-par">Ample parking facilities available with easy access to the hotel entrance.</p>
+  </div>
+</a>
+
+<a class="tile" href="https://cpireland.crowneplaza.com/dublin-blanchardstown/policies/sustainability/" style="background-image:url('content/tile-4.png');">
+  <div class="tile-overlay">
+    <h3 class="tile-title">Sustainability</h3>
+    <h4 class="tile-sub">Our Green Promise</h4>
+    <p class="tile-par">Committed to sustainable practices for a greener future and responsible travel.</p>
+  </div>
+</a>
+
+<a class="tile" href="https://www.emeraldpark.ie" style="background-image:url('content/tile-3.png');">
+  <div class="tile-overlay">
+    <h3 class="tile-title">Emerald Park</h3>
+    <h4 class="tile-sub">Theme Park Fun</h4>
+    <p class="tile-par">Ireland’s premier theme park, only 25 minutes away for family adventures.</p>
+  </div>
+  <img alt="Logo" class="tile-badge" src="content/emeraldparklogo.png"/>
+</a>
+
+<a class="tile" href="https://www.castleknockgolfclub.ie" style="background-image:url('content/tile-2.png');">
+  <div class="tile-overlay">
+    <h3 class="tile-title">Castleknock</h3>
+    <h4 class="tile-sub">Golf & Leisure</h4>
+    <p class="tile-par">Enjoy golfing and leisure facilities at the nearby Castleknock Golf Club.</p>
+  </div>
+  <img alt="Logo" class="tile-badge" src="content/Castleknock-Logo.png"/>
+</a>
+
+<a class="tile" href="content/dublin-zoo.html" style="background-image:url('content/dublinzootile.png');">
+  <div class="tile-overlay">
+    <h3 class="tile-title">DUBLIN ZOO</h3>
+    <h4 class="tile-sub">Family Adventure</h4>
+    <p class="tile-par">One of Dublin’s top attractions, a short drive from Crowne Plaza Blanchardstown.</p>
+  </div>
+  <img alt="Logo" class="tile-badge" src="content/dublinzoologo.png"/>
+</a>
+
+<a class="tile" href="https://www.odeoncinemas.ie/cinemas/blanchardstown/234" style="background-image:url('content/tile-1.png');">
+  <div class="tile-overlay">
+    <h3 class="tile-title">ODEON CINEMA</h3>
+    <h4 class="tile-sub">Big Screen Experience</h4>
+    <p class="tile-par">Catch the latest blockbusters with premium seating just minutes away.</p>
+  </div>
+  <img alt="Logo" class="tile-badge" src="content/odeon_logo_white.png"/>
+</a>
+</section>
+<!-- RIGHT COLUMN: logo top-right, image bottom; spaced between -->
+<aside aria-label="Right Panel" class="right">
+<div class="logo">
+<img alt="Logo" src="content/cplogo.png"/>
+</div>
+<div class="side-image">
+<img alt="Bottom image" src="content/ihgreward.png"/>
+</div>
+</aside>
+</div>
+</div>
+</body>
+</html>
